@@ -1,0 +1,77 @@
+listIncr1:: [Integer] -> [Integer]
+
+listIncr1 [] = []
+listIncr1 (x:xs) = [x+1] ++ listIncr1  xs
+
+--- Recursive version
+digitsList :: Integer -> [Integer]
+digitsList n
+    | n <= 0    = []
+    | n < 10    = [n]
+    | otherwise = digitsList (div n 10) ++ [mod n 10]
+
+-- Tail-recursive version
+digitsListTail :: Integer -> [Integer]
+digitsListTail n 
+    | n <= 0    = []  -- Return an empty list for non-positive integers
+    | otherwise = digitsListTailHelper n []
+
+digitsListTailHelper :: Integer -> [Integer] -> [Integer]
+digitsListTailHelper n acc
+    | n < 10    = n : acc   -- Base case: single-digit number
+    | otherwise = digitsListTailHelper (div n 10) ((mod n 10) : acc)
+
+listDiv :: [Integer] -> Integer -> [Integer]
+listDiv [] _ = []
+listDiv (x:xs) divisor
+    | mod x divisor == 0 = x : listDiv xs divisor
+    | otherwise            = listDiv xs divisor
+
+main = do
+  putStrLn "Part-1:"
+  let lst = [2,1,7,6,3,8,4]
+  let lstEmpty = []
+  let num1 = 2705
+  let num2 = -2705
+  let lst1 = [24..44]
+  putStrLn "List:"
+  print lst
+  putStrLn "Incremented List:"
+  print (listIncr1 lst)
+  putStrLn "Incremented Empty List:"
+  print (listIncr1 lstEmpty)
+
+  putStrLn "==============================="
+  putStrLn "Part-2:"
+  
+  putStrLn "Recursive version"
+
+  putStr "Digits of "
+  putStr(show num1)
+  putStr " are "
+  print (digitsList num1)
+  putStr "Digits of "
+  putStr(show num2)
+  putStr " are "
+  print (digitsList num2)
+  putStrLn ""
+  putStrLn "Tail-recursive version"
+
+  putStr "Digits of "
+  putStr(show num1)
+  putStr " are "
+  print (digitsListTail num1)
+  putStr "Digits of "
+  putStr(show num2)
+  putStr " are "
+  print (digitsListTail num2)
+
+  putStrLn "==============================="
+  putStrLn "Part-3:"
+
+  putStrLn "List:"
+  print lst1
+  putStrLn "Elements divisible by 7: "
+  print (listDiv lst1 7)
+  putStrLn "Elements divisible by 7 in empty list:"
+  print (listDiv lstEmpty 7)
